@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by palance on 16/1/19.
+ * Created by palance on 16/1/19.候选词的展示
  */
 public class CandidateView extends View {
     private List<String> mSuggestions;      // 存放候选列表
@@ -54,7 +54,7 @@ public class CandidateView extends View {
 
         int measuredWidth = resolveSize(50, widthMeasureSpec);
 
-        final int desiredHeight = ((int)mPaint.getTextSize()) + mVerticalPadding;
+        final int desiredHeight = ((int) mPaint.getTextSize()) + mVerticalPadding;
 
         // Maximum possible width and desired height
         setMeasuredDimension(measuredWidth, resolveSize(desiredHeight, heightMeasureSpec));

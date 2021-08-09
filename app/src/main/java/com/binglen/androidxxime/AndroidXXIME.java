@@ -27,34 +27,41 @@ public class AndroidXXIME extends InputMethodService
 
     private StringBuilder m_composeString = new StringBuilder();
 
-    @Override public void onCreate(){
+    @Override
+    public void onCreate() {
         Log.d(this.getClass().toString(), "onCreate: ");
         super.onCreate();
-        m_inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        m_inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
 
-    @Override public void onInitializeInterface(){
+    @Override
+    public void onInitializeInterface() {
         Log.d(this.getClass().toString(), "onInitializeInterface: ");
     }
 
+    //输入窗是指用户通过按键或手写或手势直接产生的文本展示区域。当输入法首次展现时，系统调用onCreateInputView()回调函数。你需要在该方法中创建输入法界面布局，并将该布局返回给系统
     @Override
     public View onCreateInputView() {
         Log.d(this.getClass().toString(), "onCreateInputView: ");
         // keyboard被创建后，将调用onCreateInputView函数
-        keyboardView = (KeyboardView)getLayoutInflater().inflate(R.layout.keyboard, null);  // 此处使用了keyboard.xml
+        keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);  // 此处使用了keyboard.xml
         keyboard = new Keyboard(this, R.xml.qwerty);  // 此处使用了qwerty.xml
+        //在此视图上附加键盘。键盘可以随时切换,视图将重新布局本身，以适应键盘。
         keyboardView.setKeyboard(keyboard);
         keyboardView.setOnKeyboardActionListener(this);
         return keyboardView;
     }
 
-    @Override public View onCreateCandidatesView(){
+    //候选窗用来展现输入法转换过的供用户选择的候选字串，系统将调用onCreateCandidatesView()使输入法创建并展现出候选窗。你需要实现该方法，返回一套布局来展现候选窗，当不需要展现候选窗时可以返回null。该方法默认就会返回null，因此如果你什么都不做就会什么都不展现
+    @Override
+    public View onCreateCandidatesView() {
         Log.d(this.getClass().toString(), "onCreateCandidatesView: ");
         candidateView = new CandidateView(this);
         return candidateView;
     }
 
-    @Override public void onStartInput(EditorInfo editorInfo, boolean restarting){
+    @Override
+    public void onStartInput(EditorInfo editorInfo, boolean restarting) {
         super.onStartInput(editorInfo, restarting);
         Log.d(this.getClass().toString(), "onStartInput: ");
 
@@ -63,14 +70,14 @@ public class AndroidXXIME extends InputMethodService
 
     }
 
-    private void updateCandidates(){
+    private void updateCandidates() {
         Log.d(this.getClass().toString(), "updateCandidates: ");
-        if(m_composeString.length() > 0){
+        if (m_composeString.length() > 0) {
             setCandidatesViewShown(true);
-        }else{
+        } else {
             setCandidatesViewShown(false);
         }
-        if(candidateView != null){
+        if (candidateView != null) {
             ArrayList<String> list = new ArrayList<String>();
             list.add(m_composeString.toString());
             candidateView.setSuggestions(list);
@@ -106,11 +113,10 @@ public class AndroidXXIME extends InputMethodService
     }
 
 
-
-    private void playClick(int keyCode){
+    private void playClick(int keyCode) {
         // 点击按键时播放声音，在onKey函数中被调用
-        AudioManager am = (AudioManager)getSystemService(AUDIO_SERVICE);
-        switch(keyCode){
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        switch (keyCode) {
             case 32:
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR);
                 break;
@@ -121,31 +127,33 @@ public class AndroidXXIME extends InputMethodService
             case Keyboard.KEYCODE_DELETE:
                 am.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE);
                 break;
-            default: am.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
+            default:
+                am.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
         }
     }
 
+    // 向InputConnection中也就是焦点view中传入字符串
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         InputConnection ic = getCurrentInputConnection();
         playClick(primaryCode);
-        switch(primaryCode){
-            case Keyboard.KEYCODE_DELETE :
+        switch (primaryCode) {
+            case Keyboard.KEYCODE_DELETE:
                 ic.deleteSurroundingText(1, 0);
                 break;
             case Keyboard.KEYCODE_DONE:
                 ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
                 break;
             default:
-                char code = (char)primaryCode;
-                if(code == ' '){
-                    if(m_composeString.length() > 0) {
+                char code = (char) primaryCode;
+                if (code == ' ') {
+                    if (m_composeString.length() > 0) {
                         ic.commitText(m_composeString, m_composeString.length());
                         m_composeString.setLength(0);
-                    }else{
+                    } else {
                         ic.commitText(" ", 1);
                     }
-                }else {
+                } else {
                     m_composeString.append(code);
                     ic.setComposingText(m_composeString, 1);
                 }

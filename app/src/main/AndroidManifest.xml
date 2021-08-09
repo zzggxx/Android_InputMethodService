@@ -8,14 +8,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".AndroidXXIME"
+        <!--声明需要BIND_INPUT_METHOD权限来对接系统-->
+        <service
+            android:name=".AndroidXXIME"
             android:label="@string/xxime"
-            android:permission="android.permission.BIND_INPUT_METHOD"
-            >
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <!--创建了一个能够匹配android.view.InputMethod的intent filter-->
+            <!--隐式意图过滤器-->
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/method"/>
+            <!--定义了输入法的metadata-->
+            <!--name,value给别人用的值-->
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
         </service>
 
     </application>

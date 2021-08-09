@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<input-method xmlns:android="http://schemas.android.com/apk/res/android">
+<input-method xmlns:android="http://schemas.android.com/apk/res/android"
+    android:isDefault="@bool/im_is_default">
+
+    <!--
+    label是该subtype的名字
+    imeSubtypeLocale是该subtype支持的语言类型
+    imeSubtypeMode是它所支持的模式，可以是keyboard或者voice，当输入法被调起是，系统会把用户选择的mode值传给输入法-->
     <subtype
-        android:label="@string/subtype_en_US"
         android:imeSubtypeLocale="en_US"
-        android:imeSubtypeMode="keyboard" />
+        android:imeSubtypeMode="keyboard"
+        android:label="@string/subtype_en_US" />
+
 </input-method>

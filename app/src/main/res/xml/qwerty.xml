@@ -4,7 +4,7 @@
     android:horizontalGap="0px"
     android:verticalGap="0px"
     android:keyHeight="60dp"
-    >
+    ><!--定义键盘-->
     <Row>
         <Key android:codes="113" android:keyLabel="q" android:keyEdgeFlags="left"/>
         <Key android:codes="119" android:keyLabel="w"/>
