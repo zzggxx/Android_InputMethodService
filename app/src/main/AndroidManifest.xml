@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.binglen.androidxxime">
 
@@ -8,23 +9,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--声明需要BIND_INPUT_METHOD权限来对接系统-->
-        <service
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--                                    输入法设置begin                                -->
+        <!-- 声明需要BIND_INPUT_METHOD权限来对接系统 -->
+        <!--<service
             android:name=".AndroidXXIME"
             android:label="@string/xxime"
             android:permission="android.permission.BIND_INPUT_METHOD">
-            <!--创建了一个能够匹配android.view.InputMethod的intent filter-->
-            <!--隐式意图过滤器-->
+
+            &lt;!&ndash; 创建了一个能够匹配android.view.InputMethod的intent filter &ndash;&gt;
+            &lt;!&ndash; 隐式意图过滤器 &ndash;&gt;
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <!--定义了输入法的metadata-->
-            <!--name,value给别人用的值-->
+            &lt;!&ndash; 定义了输入法的metadata &ndash;&gt;
+            &lt;!&ndash; name,value给别人用的值 &ndash;&gt;
             <meta-data
                 android:name="android.view.im"
                 android:resource="@xml/method" />
-        </service>
-
+        </service>-->
+        <!--                                    输入法设置end                                -->
     </application>
 
 </manifest>
